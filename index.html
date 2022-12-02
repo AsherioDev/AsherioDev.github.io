@@ -47,7 +47,7 @@
     const buildUrl = "Build";
     const loaderUrl = buildUrl + "/pixel 21.loader.js";
     const config = {
-      dataUrl: buildUrl + "/c6fde1bbde4a27fa36d403052256f283.data.unityweb",
+      dataUrl: buildUrl + "/9ed8abfb4e31edd4eb35f28cce136860.data.unityweb",
       frameworkUrl: buildUrl + "/56f62533c43c9a268128743d3d7a2cbc.js.unityweb",
       codeUrl: buildUrl + "/93daafc0e5b7b256ee681e8649873113.wasm.unityweb",
         symbolsUrl: buildUrl + "/c84dab8fecf96cf8c638d13a3ccad22e.json.unityweb",
@@ -66,6 +66,7 @@
 
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
       container.className = "unity-mobile";
+      config.devicePixelRatio = 1;
     }
 
     canvas.style.background = "url('" + buildUrl + "/64839461b6fb9810ffad16fd4222fcc2.jpg.unityweb') center / cover";
