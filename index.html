@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Pixel Combat</title>
+  <link rel="stylesheet" href="TemplateData/style.css">
+  <script src="TemplateData/gamescore-unity.js"></script>
+  <script>
+    var _unityAwaiter = {};
+    _unityAwaiter.ready = new Promise((resolve, reject) => {
+      _unityAwaiter.done = resolve;
+      _unityAwaiter.abort = reject;
+    });
+    window.onGSInit = async (gs) => {
+
+
+      await _unityAwaiter.ready;
+      window.GameScore = new GameScoreUnity(gs, unityI);
+    };
+  </script>
+
+  <!-- >>> replace with your gamescore load script here <<< -->
+  <script async
+    src="https://gs.eponesh.com/sdk/game-score.js?projectId=2548&publicToken=ny1BGyUCjAUMKrBzRAtX7ETOT7yoFlFP&callback=onGSInit"></script>
+  <!-- >>> replace with your gamescore load script here <<< -->
+
+</head>
+
+<body class="dark">
+  <div id="unity-container" class="unity-desktop">
+    <canvas id="unity-canvas"></canvas>
+  </div>
+  <div id="loading-cover" style="display:none;">
+    <div id="unity-loading-bar">
+      <div id="unity-logo"><img src="logo.png"></div>
+      <div id="unity-progress-bar-empty" style="display: none;">
+        <div id="unity-progress-bar-full"></div>
+      </div>
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+  <script>
+    const buildUrl = "Build";
+    const loaderUrl = buildUrl + "/pixel 21.loader.js";
+    const config = {
+      dataUrl: buildUrl + "/0ba7d35080b7322122e16e12302cf0bb.data.unityweb",
+      frameworkUrl: buildUrl + "/56f62533c43c9a268128743d3d7a2cbc.js.unityweb",
+      codeUrl: buildUrl + "/93daafc0e5b7b256ee681e8649873113.wasm.unityweb",
+        symbolsUrl: buildUrl + "/c84dab8fecf96cf8c638d13a3ccad22e.json.unityweb",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "GS Games",
+      productName: "Pixel Combat",
+      productVersion: "4.4.8",
+    };
+
+    const container = document.querySelector("#unity-container");
+    const canvas = document.querySelector("#unity-canvas");
+    const loadingCover = document.querySelector("#loading-cover");
+    const progressBarEmpty = document.querySelector("#unity-progress-bar-empty");
+    const progressBarFull = document.querySelector("#unity-progress-bar-full");
+    const spinner = document.querySelector('.spinner');
+
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      container.className = "unity-mobile";
+    }
+
+    canvas.style.background = "url('" + buildUrl + "/64839461b6fb9810ffad16fd4222fcc2.jpg.unityweb') center / cover";
+    loadingCover.style.display = "";
+
+    const script = document.createElement("script");
+    var unityI = null;
+    script.src = loaderUrl;
+    script.onload = () => {
+      createUnityInstance(canvas, config, (progress) => {
+        spinner.style.display = "none";
+        progressBarEmpty.style.display = "";
+        progressBarFull.style.width = `${100 * progress}%`;
+      }).then((unityInstance) => {
+        _unityAwaiter.done(unityInstance);
+        unityI = unityInstance;
+        loadingCover.style.display = "none";
+      }).catch((message) => {
+        _unityAwaiter.abort(message);
+        alert(message);
+      });
+    };
+    document.body.appendChild(script);
+
+    document.addEventListener("pointerdown", () => {
+      container.focus();
+      window.focus();
+      canvas.focus();
+    });
+
+  </script>
+</body>
+
+</html>
