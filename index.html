@@ -6,15 +6,10 @@
     <title>MrDudeChallenge</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
-    <script src="/sdk.js"></script>
+    <link rel="stylesheet" href="TemplateData/diagnostics.css">
+    <script src="TemplateData/diagnostics.js"></script>
   </head>
   <body>
-    <script>
-      YaGames.init().then(ysdk => {
-        window.ysdk = ysdk;
-        ShowInterstitial();
-      });
-    </script>
     <div id="unity-container">
       <canvas id="unity-canvas" tabindex="-1"></canvas>
       <div id="unity-loading-bar">
@@ -23,41 +18,34 @@
           <div id="unity-progress-bar-full"></div>
         </div>
       </div>
+      <img id="diagnostics-icon" src="TemplateData/webmemd-icon.png">
     </div>
     <script>
-      let adsOpened = false;
-      
-      function ShowInterstitial() {
-        ysdk.adv.showFullscreenAdv({
-          callbacks: {
-            onClose: function(wasShown) {
-              adsOpened = true;
-            },
-            onError: function(error) {
-            adsOpened = false;
-            }
-          }
-        })
-      }
-
       var canvas = document.querySelector("#unity-canvas");
 
       function unityShowBanner(msg, type) {  
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/WebBuild.loader.js";
+      var loaderUrl = buildUrl + "/ChallengeWeb.loader.js";
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/WebBuild.data.unityweb",
-        frameworkUrl: buildUrl + "/WebBuild.framework.js.unityweb",
-        codeUrl: buildUrl + "/WebBuild.wasm.unityweb",
+        dataUrl: buildUrl + "/ChallengeWeb.data.br",
+        frameworkUrl: buildUrl + "/ChallengeWeb.framework.js.br",
+        codeUrl: buildUrl + "/ChallengeWeb.wasm.br",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "SeriousGames",
         productName: "MrDudeChallenge",
         productVersion: "0.1",
         showBanner: unityShowBanner,
       };
+      
+        // position the diagnostics icon in the corner on the canvas
+        let diagnostics_icon = document.getElementById("diagnostics-icon");
+        diagnostics_icon.style.position = "fixed";
+        diagnostics_icon.style.bottom = "10px";
+        diagnostics_icon.style.right = "0px";
+        canvas.after(diagnostics_icon);
 
       // By default, Unity keeps WebGL canvas render target size matched with
       // the DOM size of the canvas element (scaled by window.devicePixelRatio)
@@ -98,7 +86,9 @@
           document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
               }).then((unityInstance) => {
                 document.querySelector("#unity-loading-bar").style.display = "none";
-
+document.getElementById("diagnostics-icon").onclick = () => {
+                  unityDiagnostics.openDiagnosticsDiv(unityInstance.GetMetricsInfo);
+                };
               }).catch((message) => {
                 alert(message);
               });
