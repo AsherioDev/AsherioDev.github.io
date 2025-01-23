@@ -26,13 +26,23 @@
       function unityShowBanner(msg, type) {  
       }
 
+      var dataFile = "/WebGL_Build.data.unityweb";                                  
+      var c = document.createElement("canvas");                                 
+      var gl = c.getContext("webgl");                                      
+      var gl2 = c.getContext("webgl2");                                    
+      if ((gl && gl.getExtension('WEBGL_compressed_texture_astc')) || (gl2 &&   
+              gl2.getExtension('WEBGL_compressed_texture_astc'))) {             
+        dataFile =  "/WebGL_Mobile.data";                                       
+      console.log('Mobile Load');
+      }  
+
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/ChallengeWeb.loader.js";
+      var loaderUrl = buildUrl + "/WebGL_Build.loader.js";
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/ChallengeWeb.data.unityweb",
-        frameworkUrl: buildUrl + "/ChallengeWeb.framework.js.unityweb",
-        codeUrl: buildUrl + "/ChallengeWeb.wasm.unityweb",
+        dataUrl: buildUrl + dataFile,
+        frameworkUrl: buildUrl + "/WebGL_Build.framework.js.unityweb",
+        codeUrl: buildUrl + "/WebGL_Build.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "SeriousGames",
         productName: "MrDudeChallenge",
