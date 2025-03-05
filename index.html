@@ -6,6 +6,8 @@
     <title>MrDudeChallenge</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <link rel="stylesheet" href="TemplateData/diagnostics.css">
+    <script src="TemplateData/diagnostics.js"></script>
   </head>
   <body>
     <div id="unity-container">
@@ -16,6 +18,7 @@
           <div id="unity-progress-bar-full"></div>
         </div>
       </div>
+      <img id="diagnostics-icon" src="TemplateData/webmemd-icon.png">
     </div>
     <script>
       var canvas = document.querySelector("#unity-canvas");
@@ -24,18 +27,25 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/VivoxTest.loader.js";
+      var loaderUrl = buildUrl + "/ChallengeStatic.loader.js";
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/VivoxTest.data",
-        frameworkUrl: buildUrl + "/VivoxTest.framework.js",
-        codeUrl: buildUrl + "/VivoxTest.wasm",
+        dataUrl: buildUrl + "/ChallengeStatic.data.unityweb",
+        frameworkUrl: buildUrl + "/ChallengeStatic.framework.js.unityweb",
+        codeUrl: buildUrl + "/ChallengeStatic.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "SeriousGames",
         productName: "MrDudeChallenge",
         productVersion: "0.1",
         showBanner: unityShowBanner,
       };
+      
+        // position the diagnostics icon in the corner on the canvas
+        let diagnostics_icon = document.getElementById("diagnostics-icon");
+        diagnostics_icon.style.position = "fixed";
+        diagnostics_icon.style.bottom = "10px";
+        diagnostics_icon.style.right = "0px";
+        canvas.after(diagnostics_icon);
 
       // By default, Unity keeps WebGL canvas render target size matched with
       // the DOM size of the canvas element (scaled by window.devicePixelRatio)
@@ -76,7 +86,9 @@
           document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
               }).then((unityInstance) => {
                 document.querySelector("#unity-loading-bar").style.display = "none";
-
+document.getElementById("diagnostics-icon").onclick = () => {
+                  unityDiagnostics.openDiagnosticsDiv(unityInstance.GetMetricsInfo);
+                };
               }).catch((message) => {
                 alert(message);
               });
