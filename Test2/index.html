@@ -88,6 +88,7 @@ loadingBar.style.display = "block";var globalUnityInstance = null;
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
 loadingBar.style.display = "none";globalUnityInstance = unityInstance;
+unityInstance.SetFullscreen(1);
         }).catch((message) => {
           alert(message);
         });
