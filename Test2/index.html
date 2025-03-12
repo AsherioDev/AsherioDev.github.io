@@ -10,6 +10,7 @@
   <body>
     <div id="unity-container">
       <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+      <div id="unity-fullscreen-button"></div>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -88,7 +89,9 @@ loadingBar.style.display = "block";var globalUnityInstance = null;
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
 loadingBar.style.display = "none";globalUnityInstance = unityInstance;
-unityInstance.SetFullscreen(1);
+document.querySelector("#unity-fullscreen-button").onclick = () => {
+                  unityInstance.SetFullscreen(1);
+                };
         }).catch((message) => {
           alert(message);
         });
