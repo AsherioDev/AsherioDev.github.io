@@ -79,6 +79,11 @@
         meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
         document.getElementsByTagName('head')[0].appendChild(meta);
       }
+      let diagnostics_icon = document.getElementById("unity-fullscreen-button");
+        diagnostics_icon.style.position = "fixed";
+        diagnostics_icon.style.bottom = "10px";
+        diagnostics_icon.style.right = "0px";
+        canvas.after(diagnostics_icon);
 
 loadingBar.style.display = "block";var globalUnityInstance = null;
 
