@@ -24,6 +24,27 @@
       </div>
     </div>
     <script>
+      window.addEventListener("focus", () => {
+    if (gameInstance){
+      gameInstance.SendMessage('Canvas', 'AddDebugText', 'JavaScript Focus')
+    }
+});
+
+window.addEventListener("blur", () => {
+    if (gameInstance){
+      gameInstance.SendMessage('Canvas', 'AddDebugText', 'JavaScript Blur')
+    }
+});
+document.addEventListener("visibilitychange", () => {
+  if (gameInstance){
+          if (document.visibilityState === "visible") {
+        gameInstance.SendMessage('Canvas', 'AddDebugText', 'JavaScript Visibility True')
+    } else {
+        gameInstance.SendMessage('Canvas', 'AddDebugText', 'JavaScript Visibility False')
+    }
+    }
+});
+      var gameInstance = null;
       var canvas = document.querySelector("#unity-canvas");
 
       // Shows a temporary message banner/ribbon for a few seconds, or
@@ -110,6 +131,7 @@
         createUnityInstance(canvas, config, (progress) => {
           document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
               }).then((unityInstance) => {
+                gameInstance = unityInstance;
                 document.querySelector("#unity-loading-bar").style.display = "none";
                 document.querySelector("#unity-fullscreen-button").onclick = () => {
                   unityInstance.SetFullscreen(1);
